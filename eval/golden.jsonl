@@ -1,0 +1,14 @@
+{"id": "q01", "question": "What electrical supply does the VX-40 need?", "answerable": true, "relevant": [{"source": "01-installation.md", "section": "Electrical connection"}]}
+{"id": "q02", "question": "At what pressure should the compressed air regulator be set?", "answerable": true, "relevant": [{"source": "01-installation.md", "section": "Compressed air"}]}
+{"id": "q03", "question": "How long does the sealing plate take to heat up on first start-up?", "answerable": true, "relevant": [{"source": "01-installation.md", "section": "First start-up"}]}
+{"id": "q04", "question": "What should the operator check at the start of every shift?", "answerable": true, "relevant": [{"source": "02-maintenance.md", "section": "Daily checks"}]}
+{"id": "q05", "question": "How often must the silicone sealing rubber be replaced?", "answerable": true, "relevant": [{"source": "02-maintenance.md", "section": "Replacing the sealing rubber"}]}
+{"id": "q06", "question": "What grease is used for the linear guides and how often?", "answerable": true, "relevant": [{"source": "02-maintenance.md", "section": "Lubrication"}]}
+{"id": "q07", "question": "The trays are leaking at the seal. What should I check?", "answerable": true, "relevant": [{"source": "03-troubleshooting.md", "section": "Weak or leaking seals"}, {"source": "02-maintenance.md", "section": "Replacing the sealing rubber"}]}
+{"id": "q08", "question": "What does alarm E12 mean and how do I fix it?", "answerable": true, "relevant": [{"source": "03-troubleshooting.md", "section": "Alarm E12: sealing temperature not reached"}]}
+{"id": "q09", "question": "What resistance should the heating element have when cold?", "answerable": true, "relevant": [{"source": "03-troubleshooting.md", "section": "Alarm E12: sealing temperature not reached"}]}
+{"id": "q10", "question": "Why is there wrinkling on the lidding film?", "answerable": true, "relevant": [{"source": "03-troubleshooting.md", "section": "Wrinkles in the film"}]}
+{"id": "q11", "question": "How do I lock out the machine before maintenance?", "answerable": true, "relevant": [{"source": "04-safety.md", "section": "Lockout and tagout"}]}
+{"id": "q12", "question": "How hot does the sealing plate get and when is it safe to touch?", "answerable": true, "relevant": [{"source": "04-safety.md", "section": "Hot surfaces"}]}
+{"id": "q13", "question": "What is the warranty period of the VX-40?", "answerable": false, "relevant": []}
+{"id": "q14", "question": "Can the VX-40 vacuum-pack meat in modified atmosphere?", "answerable": false, "relevant": []}
