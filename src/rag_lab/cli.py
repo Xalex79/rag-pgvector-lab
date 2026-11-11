@@ -13,6 +13,7 @@ from .evaluate import agent_metrics, load_golden, retrieval_metrics
 from .store import MemoryStore, PgVectorStore
 
 ROOT = Path(__file__).resolve().parents[2]
+AGENTS = ("direct", "langgraph")  # direct Anthropic API (agent.py) or LangGraph (agent_langgraph.py)
 
 
 def build_embedder(settings: Settings, offline: bool) -> Embedder:
@@ -46,7 +47,17 @@ def cmd_ingest(args: argparse.Namespace, settings: Settings) -> None:
     print(f"Indexed {store.count()} chunks from {args.corpus}")
 
 
-def _agent(settings: Settings, search):
+def _agent(settings: Settings, search, kind: str = "direct"):
+    if kind == "langgraph":
+        from .agent_langgraph import LangGraphAgent, make_chat_model
+
+        return LangGraphAgent(
+            make_chat_model(settings.model, settings.effort, settings.max_tokens),
+            search,
+            max_steps=settings.max_steps,
+            prices=settings.prices,
+        )
+
     import anthropic
 
     from .agent import Agent
@@ -65,7 +76,7 @@ def _agent(settings: Settings, search):
 def cmd_ask(args: argparse.Namespace, settings: Settings) -> None:
     embedder = build_embedder(settings, args.offline)
     store = build_store(settings, embedder, Path(args.corpus), args.offline)
-    agent = _agent(settings, lambda q: store.search(embedder.embed_query(q), settings.top_k))
+    agent = _agent(settings, lambda q: store.search(embedder.embed_query(q), settings.top_k), args.agent)
     result = agent.ask(args.question)
     print(
         json.dumps(
@@ -94,8 +105,9 @@ def cmd_eval(args: argparse.Namespace, settings: Settings) -> None:
 
     report = {"retrieval": retrieval_metrics(items, search, settings.top_k)}
     if not args.retrieval_only:
-        agent = _agent(settings, search)
-        report["agent"] = agent_metrics(items, [agent.ask(i.question) for i in items])
+        agent = _agent(settings, search, args.agent)
+        report["agent"] = {"implementation": args.agent}
+        report["agent"].update(agent_metrics(items, [agent.ask(i.question) for i in items]))
     print(json.dumps(report, indent=2))
 
 
@@ -109,11 +121,13 @@ def main(argv: list[str] | None = None) -> None:
     ask = sub.add_parser("ask", help="ask a question to the agent")
     ask.add_argument("question")
     ask.add_argument("--offline", action="store_true", help="hashing embeddings, in-memory index")
+    ask.add_argument("--agent", choices=AGENTS, default="direct", help="agent implementation")
 
     ev = sub.add_parser("eval", help="evaluate retrieval (and the agent) on the golden set")
     ev.add_argument("--golden", default=str(ROOT / "eval" / "golden.jsonl"))
     ev.add_argument("--retrieval-only", action="store_true", help="skip the agent (no API calls)")
     ev.add_argument("--offline", action="store_true", help="hashing embeddings, in-memory index")
+    ev.add_argument("--agent", choices=AGENTS, default="direct", help="agent implementation")
 
     args = parser.parse_args(argv)
     settings = Settings()

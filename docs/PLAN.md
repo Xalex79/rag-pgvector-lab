@@ -6,6 +6,7 @@
   (nomic-embed-text v1.5 by default).
 - `rag-lab ingest`, then `rag-lab eval`.
 - Fill in the results table in the README: retrieval metrics, agent metrics and cost per question.
+- Run `rag-lab eval` with `--agent direct` and `--agent langgraph` and compare quality and cost.
 
 ## 2. Real documentation
 
